@@ -1,74 +1,117 @@
 "use client";
 
+import { Card } from "@/components/ui/card";
+import PhotoImage from "@/public/photo.svg";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import useTextToImage from "@/lib/hooks/useTextToImage";
 import { convertBlobToUrl } from "@/lib/utils";
-import { useState } from "react";
-import useSWR from "swr";
+import Image from "next/image";
 
-// The fetcher function to make the request to the Hugging Face API
-const fetcher = async (url: string, text: string) => {
-  const payload = {
-    inputs: text,
-  };
+const formSchema = z.object({
+  text: z
+    .string()
+    .min(3, "Prompt should contain 3 characters")
+    .max(200, "Prompt should not contain more than 200 characters"),
+});
 
-  const result = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_HUGGING_FACE_AUTH_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
+type FormValues = z.infer<typeof formSchema>;
 
-  return result.blob();
-};
+const defaultPrompts = ["A guy holding an apple", "Picture of a dog"];
 
 export default function Home() {
-  const [inputText, setInputText] = useState<string>("");
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      text: "",
+    },
+  });
 
-  const {
-    data: blob,
-    error,
-    isValidating,
-  } = useSWR(
-    inputText
-      ? [
-          `https://api-inference.huggingface.co/models/ZB-Tech/Text-to-Image`,
-          inputText,
-        ]
-      : null,
-    ([url, text]) => fetcher(url, text),
-    {
-      revalidateOnFocus: false, // Optionally disable auto-fetching on focus
-    }
-  );
-
+  const { blob, error, isMutating, trigger } = useTextToImage();
   const url = blob ? convertBlobToUrl(blob) : undefined;
 
+  const onSubmit = async (values: FormValues) => {
+    if (!values) return;
+    const blob = await trigger({
+      inputs: values.text,
+    });
+
+    if (blob) {
+      form.resetField("text");
+    }
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-12">
-      <h1 className="text-5xl font-bold mb-2 text-center">Transformers.js</h1>
-      <h2 className="text-2xl mb-4 text-center">
-        Next.js template (client-side with SWR)
-      </h2>
+    <div className="bg-primary min-h-screen flex justify-center items-center p-4 overflow-hidden">
+      <Card className="p-4 container md:flex md:justify-start md:gap-4">
+        {/* Form */}
+        <div className="md:min-w-[200px] md:w-1/3">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="text"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Text Prompt</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Describe what kind of image you want"
+                        {...field}
+                      />
+                    </FormControl>
 
-      <input
-        type="text"
-        className="w-full max-w-xs p-2 border border-gray-300 rounded mb-4"
-        placeholder="Enter text here"
-        onChange={(e) => setInputText(e.target.value)}
-      />
-
-      {isValidating && (
-        <pre className="bg-gray-100 p-2 rounded">Loading...</pre>
-      )}
-
-      {error && (
-        <pre className="bg-red-100 p-2 rounded">
-          Error occurred: {error.message}
-        </pre>
-      )}
-
-      {url && <img src={url} alt="Generated image" />}
-    </main>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Separator />
+              <Button disabled={isMutating} className="" type="submit">
+                Submit
+              </Button>
+            </form>
+          </Form>
+        </div>
+        {/* Image */}
+        <div className="mt-4 md:flex-grow">
+          <div className="relative w-full h-[400px] ">
+            {url ? (
+              <Image
+                className="object-cover rounded-md"
+                src={url}
+                fill
+                alt="Generated Image"
+              />
+            ) : (
+              <div className="h-full flex flex-col justify-center items-center">
+                <Image
+                  src={PhotoImage}
+                  className="object-cover mb-2"
+                  alt="Mock Image Svg"
+                  width={100}
+                  height={100}
+                />
+                <h1 className="font-bold font-sans">
+                  Generate an image using the prompt
+                </h1>
+              </div>
+            )}
+          </div>
+        </div>
+      </Card>
+    </div>
   );
 }
