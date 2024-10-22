@@ -7,6 +7,7 @@ export default function useTextToImage() {
     error,
     isMutating,
     trigger,
+    reset,
   } = useSWRMutation(
     "https://api-inference.huggingface.co/models/ZB-Tech/Text-to-Image",
     textToImageFetcher
@@ -17,5 +18,6 @@ export default function useTextToImage() {
     error,
     isMutating,
     trigger,
+    reset,
   };
 }
