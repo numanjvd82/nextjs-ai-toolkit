@@ -1,5 +1,9 @@
 type Payload = {
   inputs: string;
+  guidance_scale?: number;
+  negative_prompt?: string[];
+  num_inference_steps?: number;
+  seed?: number;
 };
 
 export const textToImageFetcher = async (
@@ -10,12 +14,14 @@ export const textToImageFetcher = async (
     arg: Payload;
   }
 ) => {
+  const { inputs, guidance_scale, negative_prompt, num_inference_steps, seed } =
+    arg;
   const payload = {
-    inputs: arg.inputs,
-    target_size: {
-      width: 450,
-      height: 400,
-    },
+    inputs,
+    guidance_scale,
+    negative_prompt,
+    num_inference_steps,
+    seed,
   };
 
   const result = await fetch(url, {

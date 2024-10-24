@@ -9,7 +9,7 @@ import ImageSection from "@/components/pages/tools/ImageSection";
 
 import TextToImgForm from "@/components/pages/tools/TextToImgForm";
 import useTextToImage from "@/lib/hooks/useTextToImage";
-import { convertBlobToUrl } from "@/lib/utils";
+import { convertBlobToUrl, isSafePrompt } from "@/lib/utils";
 import { toast } from "sonner";
 
 const formSchema = z.object({
@@ -17,14 +17,16 @@ const formSchema = z.object({
     .string()
     .min(3, "Prompt should contain 3 characters")
     .max(200, "Prompt should not contain more than 200 characters"),
-  guidance_scale: z.number().int().positive().min(1).max(30).optional(),
+  guidance_scale: z.number().int().positive().min(1).max(10).optional(),
   negative_prompt: z
     .string()
     .transform((input) => input.split(",").map((str) => str.trim()))
     .refine((arr) => arr.length > 0 && arr.every((item) => item.length > 0), {
-      message: "Each item must be a non-empty string",
+      message: "Each keyword should have atleast one character",
     })
     .optional(),
+  num_inference_steps: z.number().int().positive().min(1).max(30).optional(),
+  seed: z.number().int().positive().min(1).max(100).optional(),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
@@ -36,6 +38,9 @@ export default function Home() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       text: "",
+      guidance_scale: 10,
+      num_inference_steps: 30,
+      seed: 42,
     },
   });
 
@@ -49,18 +54,22 @@ export default function Home() {
 
   const onSubmit = async (values: FormValues) => {
     if (!values) return;
-    const blob = await convertTextToImage({
+    if (!isSafePrompt(values.text)) {
+      toast.warning("This is not a safe prompt", {
+        position: "top-right",
+      });
+      return;
+    }
+    const params = {
       inputs: values.text,
-    });
+    };
+    const blob = await convertTextToImage(params);
 
     if (!blob && error) {
       toast.error(error.message, {
         action: {
           label: "Try again",
-          onClick: () =>
-            convertTextToImage({
-              inputs: values.text,
-            }),
+          onClick: () => convertTextToImage(params),
         },
       });
     }
