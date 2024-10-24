@@ -17,7 +17,7 @@ const formSchema = z.object({
     .string()
     .min(3, "Prompt should contain 3 characters")
     .max(200, "Prompt should not contain more than 200 characters"),
-  guidance_scale: z.number().int().positive().min(1).max(10).optional(),
+  guidance_scale: z.coerce.number().int().positive().min(1).max(10).optional(),
   negative_prompt: z
     .string()
     .transform((input) => input.split(",").map((str) => str.trim()))
@@ -25,13 +25,17 @@ const formSchema = z.object({
       message: "Each keyword should have atleast one character",
     })
     .optional(),
-  num_inference_steps: z.number().int().positive().min(1).max(30).optional(),
-  seed: z.number().int().positive().min(1).max(100).optional(),
+  num_inference_steps: z.coerce
+    .number()
+    .int()
+    .positive()
+    .min(1)
+    .max(30)
+    .optional(),
+  seed: z.coerce.number().int().positive().min(1).max(100).optional(),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
-
-const defaultPrompts = ["A guy holding an apple", "Picture of a dog"];
 
 export default function Home() {
   const form = useForm<FormValues>({

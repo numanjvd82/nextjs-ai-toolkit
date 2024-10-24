@@ -44,6 +44,7 @@ export const blockedWords = [
   "nude",
   "no clothes",
   "cleavage",
+  "booty",
 ];
 
 export const isSafePrompt = (inputPrompt: string) => {

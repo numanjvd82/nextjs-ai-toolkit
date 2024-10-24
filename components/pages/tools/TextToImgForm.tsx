@@ -16,9 +16,12 @@ import HoverInfoCard from "./HoverInfoCard";
 
 type Props = {
   onSubmit: (values: FormValues) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<FormValues, any, undefined>;
   isMutating: boolean;
 };
+
+const defaultPrompts = ["A picture of a boat", "Picture of a dog"];
 
 export const TextToImgForm: React.FC<Props> = ({
   onSubmit,
@@ -45,6 +48,22 @@ export const TextToImgForm: React.FC<Props> = ({
             </FormItem>
           )}
         />
+
+        <div className="font-sans text-xs flex gap-1 items-center">
+          {defaultPrompts.map((dp, i) => (
+            <div
+              key={i}
+              onClick={() => {
+                form.setValue("text", dp);
+                form.handleSubmit(onSubmit)();
+              }}
+              className="bg-primary p-2 text-secondary rounded-md cursor-pointer transition-all hover:brightness-50"
+            >
+              {dp}
+            </div>
+          ))}
+        </div>
+
         <Separator />
         <div className="grid grid-cols-2 items-center gap-2">
           <FormField
