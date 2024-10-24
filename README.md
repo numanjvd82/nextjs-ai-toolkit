@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛠️ AI Toolkit
 
-## Getting Started
+Welcome to **AI Toolkit**, a Next.js project built with [ShadCN UI](https://shadcn.dev/) and powered by [Hugging Face models](https://huggingface.co/). This project aims to automate classical tasks with AI tools. Currently, it supports generating images from text prompts, with more features coming soon!
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 🌟 **Image Generation**: Convert your text prompts into stunning images using cutting-edge AI models from Hugging Face.
+- 🚀 **Fast & Scalable**: Built on top of Next.js for optimal performance and scalability.
+- 🎨 **Beautiful UI**: Styled with ShadCN for a sleek and modern look.
+- 🔒 **Secure**: Handle data securely while interacting with Hugging Face's API.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [Next.js](https://nextjs.org/)
+- [ShadCN UI](https://shadcn.dev/)
+- [Hugging Face](https://huggingface.co/)
+- [TailwindCSS](https://tailwindcss.com/)
 
-## Learn More
+## 🚧 Upcoming Features
 
-To learn more about Next.js, take a look at the following resources:
+- 🧠 **Text Summarization**: Quickly summarize long documents.
+- 🔄 **Text Generation**: Generate text using prompts.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 🛠️ Setting Up Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To securely use your Hugging Face authentication token in your Next.js project, follow these steps:
 
-## Deploy on Vercel
+## 1. Create a `.env.local` File
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+In the root directory of your Next.js project, create a new file named `.env.local`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 2. Add the Environment Variable
+
+Open the `.env.local` file and add the following line, replacing `your_hugging_face_auth_token` with your actual Hugging Face authentication token:
+
+```plaintext
+NEXT_PUBLIC_HUGGING_FACE_AUTH_TOKEN=your_hugging_face_auth_token
