@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Navbar() {
   return (
     <nav
-      className="flex justify-between items-center px-2 h-12 bg-gray-100 text-black shadow-sm font-mono fixed top-0 w-full"
+      className="flex justify-between items-center px-2 h-12 bg-gray-100 text-black shadow-sm font-mono"
       role="navigation"
     >
       <Link href="/">
