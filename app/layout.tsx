@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
@@ -28,6 +29,7 @@ export default function RootLayout({
          ${notoSans.variable}
         `}
       >
+        <Navbar />
         {children}
         <Toaster />
       </body>

@@ -49,6 +49,7 @@ export default function Home() {
     error,
     isMutating,
     trigger: convertTextToImage,
+    reset,
   } = useTextToImage();
   const url = blob ? convertBlobToUrl(blob) : undefined;
 
@@ -69,7 +70,10 @@ export default function Home() {
       toast.error(error.message, {
         action: {
           label: "Try again",
-          onClick: () => convertTextToImage(params),
+          onClick: () => {
+            reset();
+            convertTextToImage(params);
+          },
         },
       });
     }

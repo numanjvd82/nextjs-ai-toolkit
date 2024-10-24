@@ -91,7 +91,7 @@ export const TextToImgForm: React.FC<Props> = ({
                   <HoverInfoCard content="Reduce the number of inference steps. Fewer steps will lead to faster image generation, but it may impact quality. You can try reducing it to around 25-30 for a quicker result without sacrificing too much quality" />
                 </div>
                 <FormControl>
-                  <Input placeholder="" {...field} />
+                  <Input type="number" placeholder="" {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -108,7 +108,7 @@ export const TextToImgForm: React.FC<Props> = ({
                   <HoverInfoCard content="Fixing the seed value won’t directly impact speed, but it will ensure reproducibility if you run the same prompt multiple times" />
                 </div>
                 <FormControl>
-                  <Input placeholder="" {...field} />
+                  <Input type="number" placeholder="" {...field} />
                 </FormControl>
 
                 <FormMessage />

@@ -9,30 +9,25 @@ export default function Features() {
           <div className="bg-primary-foreground p-8 shadow-lg rounded-lg text-center">
             <TextIcon className="h-4 w-4" />
             <h3 className="text-2xl font-semibold mb-2">
-              Pre-trained AI Models
+              Text to Image Converter
             </h3>
             <p className="text-gray-600">
-              Use state-of-the-art models for NLP, computer vision, and more.
+              Use state-of-the-art models for image generation using text.
             </p>
           </div>
 
           <div className="bg-primary-foreground p-8 shadow-lg rounded-lg text-center">
             <TextIcon className="h-4 w-4" />
-            <h3 className="text-2xl font-semibold mb-2">
-              Custom Model Training
-            </h3>
+            <h3 className="text-2xl font-semibold mb-2">Text Summarization</h3>
             <p className="text-gray-600">
-              Train models tailored to your specific use case using our
-              intuitive platform.
+              Summarize huge paragraphs of text into more meaningful text
             </p>
           </div>
 
           <div className="bg-primary-foreground p-8 shadow-lg rounded-lg text-center">
             <TextIcon className="h-4 w-4" />
-            <h3 className="text-2xl font-semibold mb-2">Seamless Deployment</h3>
-            <p className="text-gray-600">
-              Easily deploy AI models to the cloud with just a few clicks.
-            </p>
+            <h3 className="text-2xl font-semibold mb-2">Text Generation</h3>
+            <p className="text-gray-600">Easily generate text using a prompt</p>
           </div>
         </div>
       </div>
